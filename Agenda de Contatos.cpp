@@ -8,10 +8,12 @@ void Menu()
 {
     std::cout << "===== Agenda de Contatos =====" << std::endl;
     std::cout << "1. Adicionar contato" << std::endl;
-    std::cout << "2. Listar contatos" << std::endl;
-    std::cout << "3. Buscar contatos" << std::endl;
-    std::cout << "4. Excluir contato" << std::endl;
-    std::cout << "5. Sair" << std::endl;
+    std::cout << "2. Adicionar telefone" << std::endl;
+    std::cout << "3. Adicionar email" << std::endl;
+    std::cout << "4. Listar contatos" << std::endl;
+    std::cout << "5. Buscar contatos" << std::endl;
+    std::cout << "6. Excluir contato" << std::endl;
+    std::cout << "7. Sair" << std::endl;
     std::cout << "===============================" << std::endl;
 }
 
@@ -21,7 +23,7 @@ int lerOpcaoValida()
 
     while (true) {
         std::cout << "Escolha uma opção: ";
-        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
+        if (std::cin >> opcao && opcao >= 1 && opcao <= 7) {
             return opcao;
         }
 
@@ -59,6 +61,50 @@ void adicionarContato()
         arquivoContatos.close();
     } else {
         std::cout << "Erro ao abrir o arquivo para adicionar contato." << std::endl;
+    }
+}
+
+void adicionarTelefone()
+{
+    std::string telefoneContato;
+
+    do {
+        std::cout << "Digite o telefone do contato: ";
+        leituraDeLinhas(telefoneContato);
+
+        if (telefoneContato.empty()) {
+            std::cout << "Telefone inválido. Por favor, tente novamente." << std::endl;
+        }
+    } while (telefoneContato.empty());
+
+    std::ofstream arquivoContatos("contatos.txt", std::ios::app);
+    if (arquivoContatos.is_open()) {
+        arquivoContatos << telefoneContato << std::endl;
+        arquivoContatos.close();
+    } else {
+        std::cout << "Erro ao abrir o arquivo para adicionar telefone." << std::endl;
+    }
+}
+
+void adicionarEmail()
+{
+    std::string emailContato;
+
+    do {
+        std::cout << "Digite o email do contato: ";
+        leituraDeLinhas(emailContato);
+
+        if (emailContato.empty()) {
+            std::cout << "Email inválido. Por favor, tente novamente." << std::endl;
+        }
+    } while (emailContato.empty());
+
+    std::ofstream arquivoContatos("contatos.txt", std::ios::app);
+    if (arquivoContatos.is_open()) {
+        arquivoContatos << emailContato << std::endl;
+        arquivoContatos.close();
+    } else {
+        std::cout << "Erro ao abrir o arquivo para adicionar email." << std::endl;
     }
 }
 
@@ -152,15 +198,21 @@ int main()
                 adicionarContato();
                 break;
             case 2:
-                listarContatos();
+                adicionarTelefone();
                 break;
             case 3:
-                buscarContato();
+                adicionarEmail();
                 break;
             case 4:
-                excluirContato();
+                listarContatos();
                 break;
             case 5:
+                buscarContato();
+                break;
+            case 6:
+                excluirContato();
+                break;
+            case 7:
                 std::cout << "Saindo..." << std::endl;
                 break;
             default:
