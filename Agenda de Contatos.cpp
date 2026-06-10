@@ -28,20 +28,6 @@ void lerNomeValido(std::string &nome) {
     } while (nome.empty());
 }
 
-int lerOpcaoValida() {
-    int opcao;
-    while (true) {
-        std::cout << "Escolha uma opção: ";
-        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
-            return opcao;
-        } else {
-            std::cout << "Opção inválida. Por favor, tente novamente." << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }
-}
-
 void adicionarContato() {
     std::string nomeContato;
 
@@ -128,6 +114,20 @@ void excluirContato() {
         }
     } else {
         std::cout << "Erro: Arquivo de contatos nao encontrado." << std::endl;
+    }
+}
+
+int lerOpcaoValida() {
+    int opcao;
+    while (true) {
+        std::cout << "Escolha uma opção: ";
+        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
+            return opcao;
+        } else {
+            std::cout << "Opção inválida. Por favor, tente novamente." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
 }
 
