@@ -218,7 +218,7 @@ int main()
             default:
                 std::cout << "Opção inválida!" << std::endl;
         }
-    } while (opcao != 5);
+    } while (opcao != 7);
 
     return 0;
 }
