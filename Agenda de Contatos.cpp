@@ -12,11 +12,15 @@ void Menu() {
     std::cout << "===============================" << std::endl;
 }
 
+void leituraDeLinhas(std::string &nome) {
+    std::getline(std::cin >> std::ws, nome);
+}
+
 void adicionarContato() {
     std::string nomeContato;
 
     std::cout << "Digite o nome do contato que deseja adicionar: ";
-    std::cin >> nomeContato;
+    leituraDeLinhas(nomeContato);
 
     std::ofstream arquivoContatos("contatos.txt", std::ios::app);
     if (arquivoContatos.is_open()) {
@@ -44,7 +48,7 @@ void listarContatos() {
 void buscarContato() {
     std::string nomeBusca;
     std::cout << "Digite o nome do contato que deseja buscar: ";
-    std::cin >> nomeBusca;
+    leituraDeLinhas(nomeBusca);
 
     std::string contato;
     bool encontrado = false;
@@ -70,7 +74,7 @@ void buscarContato() {
 void excluirContato() {
     std::string nomeExcluir;
     std::cout << "Digite o nome do contato que deseja excluir: ";
-    std::cin >> nomeExcluir;
+    leituraDeLinhas(nomeExcluir);
 
     std::string contato;
     bool encontrado = false;
