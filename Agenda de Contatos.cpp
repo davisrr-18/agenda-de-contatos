@@ -1,10 +1,11 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <limits>
 #include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <string>
 
-void Menu() {
+void Menu()
+{
     std::cout << "===== Agenda de Contatos =====" << std::endl;
     std::cout << "1. Adicionar contato" << std::endl;
     std::cout << "2. Listar contatos" << std::endl;
@@ -14,23 +15,42 @@ void Menu() {
     std::cout << "===============================" << std::endl;
 }
 
-void leituraDeLinhas(std::string &nome) {
+int lerOpcaoValida()
+{
+    int opcao;
+
+    while (true) {
+        std::cout << "Escolha uma opção: ";
+        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
+            return opcao;
+        }
+
+        std::cout << "Opção inválida. Por favor, tente novamente." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+}
+
+void leituraDeLinhas(std::string &nome)
+{
     std::getline(std::cin >> std::ws, nome);
 }
 
-void lerNomeValido(std::string &nome) {
+void lerNomeValido(std::string &nome)
+{
     do {
         std::cout << "Digite o nome do contato: ";
         leituraDeLinhas(nome);
+
         if (nome.empty()) {
             std::cout << "Nome inválido. Por favor, tente novamente." << std::endl;
         }
     } while (nome.empty());
 }
 
-void adicionarContato() {
+void adicionarContato()
+{
     std::string nomeContato;
-
     lerNomeValido(nomeContato);
 
     std::ofstream arquivoContatos("contatos.txt", std::ios::app);
@@ -42,10 +62,11 @@ void adicionarContato() {
     }
 }
 
-void listarContatos() {
+void listarContatos()
+{
     std::string contato;
-    
     std::ifstream arquivoContatos("contatos.txt");
+
     if (arquivoContatos.is_open()) {
         while (std::getline(arquivoContatos, contato)) {
             std::cout << contato << std::endl;
@@ -56,14 +77,15 @@ void listarContatos() {
     }
 }
 
-void buscarContato() {
+void buscarContato()
+{
     std::string nomeBusca;
     lerNomeValido(nomeBusca);
 
     std::string contato;
     bool encontrado = false;
-
     std::ifstream arquivoContatos("contatos.txt");
+
     if (arquivoContatos.is_open()) {
         while (std::getline(arquivoContatos, contato)) {
             if (contato == nomeBusca) {
@@ -73,6 +95,7 @@ void buscarContato() {
             }
         }
         arquivoContatos.close();
+
         if (!encontrado) {
             std::cout << "Contato não encontrado." << std::endl;
         }
@@ -81,18 +104,17 @@ void buscarContato() {
     }
 }
 
-void excluirContato() {
+void excluirContato()
+{
     std::string nomeExcluir;
     lerNomeValido(nomeExcluir);
 
     std::string contato;
     bool encontrado = false;
-
     std::ifstream arquivoContatos("contatos.txt");
     std::ofstream arquivoTemp("temp.txt");
 
     if (arquivoContatos.is_open()) {
-        
         while (std::getline(arquivoContatos, contato)) {
             if (contato == nomeExcluir) {
                 encontrado = true;
@@ -109,7 +131,7 @@ void excluirContato() {
             std::rename("temp.txt", "contatos.txt");
             std::cout << "Contato excluido com sucesso!" << std::endl;
         } else {
-            std::remove("temp.txt"); 
+            std::remove("temp.txt");
             std::cout << "Contato nao encontrado." << std::endl;
         }
     } else {
@@ -117,25 +139,14 @@ void excluirContato() {
     }
 }
 
-int lerOpcaoValida() {
+int main()
+{
     int opcao;
-    while (true) {
-        std::cout << "Escolha uma opção: ";
-        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
-            return opcao;
-        } else {
-            std::cout << "Opção inválida. Por favor, tente novamente." << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }
-}
 
-int main () {
-    int opcao;
     do {
         Menu();
         opcao = lerOpcaoValida();
+
         switch (opcao) {
             case 1:
                 adicionarContato();
@@ -156,5 +167,6 @@ int main () {
                 std::cout << "Opção inválida!" << std::endl;
         }
     } while (opcao != 5);
+
     return 0;
 }
