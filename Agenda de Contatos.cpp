@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
+#include <cstdio>
 
 void Menu() {
     std::cout << "===== Agenda de Contatos =====" << std::endl;
@@ -16,11 +18,34 @@ void leituraDeLinhas(std::string &nome) {
     std::getline(std::cin >> std::ws, nome);
 }
 
+void lerNomeValido(std::string &nome) {
+    do {
+        std::cout << "Digite o nome do contato: ";
+        leituraDeLinhas(nome);
+        if (nome.empty()) {
+            std::cout << "Nome inválido. Por favor, tente novamente." << std::endl;
+        }
+    } while (nome.empty());
+}
+
+int lerOpcaoValida() {
+    int opcao;
+    while (true) {
+        std::cout << "Escolha uma opção: ";
+        if (std::cin >> opcao && opcao >= 1 && opcao <= 5) {
+            return opcao;
+        } else {
+            std::cout << "Opção inválida. Por favor, tente novamente." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+}
+
 void adicionarContato() {
     std::string nomeContato;
 
-    std::cout << "Digite o nome do contato que deseja adicionar: ";
-    leituraDeLinhas(nomeContato);
+    lerNomeValido(nomeContato);
 
     std::ofstream arquivoContatos("contatos.txt", std::ios::app);
     if (arquivoContatos.is_open()) {
@@ -47,8 +72,7 @@ void listarContatos() {
 
 void buscarContato() {
     std::string nomeBusca;
-    std::cout << "Digite o nome do contato que deseja buscar: ";
-    leituraDeLinhas(nomeBusca);
+    lerNomeValido(nomeBusca);
 
     std::string contato;
     bool encontrado = false;
@@ -73,8 +97,7 @@ void buscarContato() {
 
 void excluirContato() {
     std::string nomeExcluir;
-    std::cout << "Digite o nome do contato que deseja excluir: ";
-    leituraDeLinhas(nomeExcluir);
+    lerNomeValido(nomeExcluir);
 
     std::string contato;
     bool encontrado = false;
@@ -112,8 +135,7 @@ int main () {
     int opcao;
     do {
         Menu();
-        std::cout << "Escolha uma opção: ";
-        std::cin >> opcao;
+        opcao = lerOpcaoValida();
         switch (opcao) {
             case 1:
                 adicionarContato();
